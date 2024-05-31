@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620211215e5619e4da2dffa9696089e5, type: 3}
+  m_Name: New Tile
+  m_EditorClassIdentifier: 
+  mask:
+    serializableGrid: 01010101010001010101000001010100000001010000000001
+    maskX: 5
+    entryPosition:
+      position: {x: 2, y: 0}
+      direction:
+        value: 0
+    exitPosition:
+      position: {x: 4, y: 2}
+      direction:
+        value: 1
+  model: {fileID: 0}
+  probability: 1
+  rightBorder:
+    points:
+    - position: {x: 4.3, y: -0.5}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 0
+      calculatedAngle: 0
+      startPos: {x: 4.3, y: -0.5}
+      endPos: {x: 4.3, y: -0.5}
+      circleCenter: {x: 0, y: 0}
+    - position: {x: 4.3, y: -0.29999995}
+      radius: 1
+      hasRadius: 1
+      calculatedRadius: 0.19999981
+      calculatedDistanceToTransition: 0.19999981
+      cumulativeDistance: 0.15707973
+      calculatedAngle: 90
+      startPos: {x: 4.3, y: -0.49999976}
+      endPos: {x: 4.5, y: -0.29999995}
+      circleCenter: {x: 4.5, y: -0.49999976}
+    - position: {x: 4.5, y: -0.29999995}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 0.3141592
+      calculatedAngle: 0
+      startPos: {x: 4.5, y: -0.29999995}
+      endPos: {x: 4.5, y: -0.29999995}
+      circleCenter: {x: 0, y: 0}
+    normalFacesRight: 0
+  leftBorder:
+    points:
+    - position: {x: -0.29999995, y: -0.5}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 0
+      calculatedAngle: 0
+      startPos: {x: -0.29999995, y: -0.5}
+      endPos: {x: -0.29999995, y: -0.5}
+      circleCenter: {x: 0, y: 0}
+    - position: {x: -0.29999995, y: 4.3}
+      radius: 1
+      hasRadius: 1
+      calculatedRadius: 1
+      calculatedDistanceToTransition: 1
+      cumulativeDistance: 4.585398
+      calculatedAngle: 90
+      startPos: {x: -0.29999995, y: 3.3000002}
+      endPos: {x: 0.70000005, y: 4.3}
+      circleCenter: {x: 0.7, y: 3.3000002}
+    - position: {x: 4.5, y: 4.3}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 9.170796
+      calculatedAngle: 0
+      startPos: {x: 4.5, y: 4.3}
+      endPos: {x: 4.5, y: 4.3}
+      circleCenter: {x: 0, y: 0}
+    normalFacesRight: 0
+  centerPath:
+    points:
+    - position: {x: 2, y: -0.5}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 0
+      calculatedAngle: 0
+      startPos: {x: 2, y: -0.5}
+      endPos: {x: 2, y: -0.5}
+      circleCenter: {x: 0, y: 0}
+    - position: {x: 2, y: 2}
+      radius: 1
+      hasRadius: 1
+      calculatedRadius: 1
+      calculatedDistanceToTransition: 1
+      cumulativeDistance: 2.2853982
+      calculatedAngle: 90
+      startPos: {x: 2, y: 1}
+      endPos: {x: 3, y: 2}
+      circleCenter: {x: 3, y: 1}
+    - position: {x: 4.5, y: 2}
+      radius: 0
+      hasRadius: 0
+      calculatedRadius: 0
+      calculatedDistanceToTransition: 0
+      cumulativeDistance: 4.5707965
+      calculatedAngle: 0
+      startPos: {x: 4.5, y: 2}
+      endPos: {x: 4.5, y: 2}
+      circleCenter: {x: 0, y: 0}
+    normalFacesRight: 0
+  entryConnectionType: 0
+  exitConnectionType: 0

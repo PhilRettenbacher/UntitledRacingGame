@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 420508e69703add4aa1150e35d34876d, type: 3}
+  m_Name: YellowLineRoad
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 5042646636831406183, guid: e0247d69affdda24b8dd150ea3be74a0, type: 3}
+  - {fileID: 5042646636831406183, guid: 1366c675fe91be94fb367dab58ca3af2, type: 3}
+  - {fileID: 5042646636831406183, guid: 4200bfdea2e535043a558b45ab97385b, type: 3}
+  - {fileID: 5042646636831406183, guid: 297fcb9f02ffb2443b4c30e9e394d834, type: 3}
+  - {fileID: 5042646636831406183, guid: 06b41e9f3d679e34ca0a5cf4da185b76, type: 3}
+  - {fileID: 5042646636831406183, guid: f98c1003d1069974ab375dda7cf471f4, type: 3}
+  - {fileID: 5042646636831406183, guid: 147e9f6b27a8df64d90103c6d3a5faa0, type: 3}
+  - {fileID: 5042646636831406183, guid: 5433bbe1e4b2997418f873eb6f143899, type: 3}
+  - {fileID: 5042646636831406183, guid: cd4f0483f0be3ca41a47b891aa4e2063, type: 3}
+  - {fileID: 5042646636831406183, guid: 1810ca3bd7a4c804bb59cbd82765e5b1, type: 3}
+  - {fileID: 5042646636831406183, guid: ac712778adeb39c409e871f72bfa24bd, type: 3}
+  - {fileID: 5042646636831406183, guid: df025eb3952ecbe4088e958b1d3aeaeb, type: 3}
+  - {fileID: 5042646636831406183, guid: cde10cb637d5b2a46a6a338726e66519, type: 3}
+  - {fileID: 5042646636831406183, guid: ead8ac89f1ac8654daa93b86e5b9aab6, type: 3}
+  - {fileID: 5042646636831406183, guid: 2f3f8fc13da738149a37fa0ddcd6cd3e, type: 3}
+  - {fileID: 5042646636831406183, guid: a8b1adaf34f6a744fb57409afb3e0e64, type: 3}
+  - {fileID: 5042646636831406183, guid: fcf6f1f841f5f6142887da29b8de9e10, type: 3}
+  - {fileID: 5042646636831406183, guid: 67411175572454f4490b7a02e89c8704, type: 3}
+  - {fileID: 5042646636831406183, guid: 69d6afd84a62d8541a1653a08adda564, type: 3}
+  - {fileID: 5042646636831406183, guid: 20fe9b7dccc408648ae8bd7ad360dc9e, type: 3}
+  - {fileID: 5042646636831406183, guid: 7f291c63698fe6f4da09941b96e72a80, type: 3}
+  - {fileID: 5042646636831406183, guid: d4238f82feb6fb14296cf00834b7062f, type: 3}
+  - {fileID: 5042646636831406183, guid: 6540a5da42a6c6345a1a10d2703d450d, type: 3}
+  - {fileID: 5042646636831406183, guid: ba08559590094304582d7e0e23fe2f66, type: 3}
+  - {fileID: 5042646636831406183, guid: 2cacb1d788b1182438f702164a9dd950, type: 3}
+  - {fileID: 5042646636831406183, guid: aa5aba12ea7a5b94cb2a1acd5d168e12, type: 3}
+  - {fileID: 5042646636831406183, guid: 938184741aec379418c72bf0328f96ec, type: 3}
+  - {fileID: 5042646636831406183, guid: 2d9c2b07c5a7e464b8682b961e64bc4d, type: 3}
+  - {fileID: 5042646636831406183, guid: 3dba0060e120fae488334b98c12f2410, type: 3}
+  - {fileID: 5042646636831406183, guid: 285c8d176b20cc04998c4cd8bf0caf9d, type: 3}
+  - {fileID: 5042646636831406183, guid: 4d38222c6732931458c4953a1024bb4e, type: 3}
+  - {fileID: 5042646636831406183, guid: 8c23b4bb333254b4c913d47502ead0bd, type: 3}
+  - {fileID: 5042646636831406183, guid: c84b6fb90b84e4c4a8421d066adb40c8, type: 3}
+  - {fileID: 5042646636831406183, guid: f55d498aae6e7284a9ad946edba6dbe5, type: 3}
+  - {fileID: 5042646636831406183, guid: feb9abf08c77cc3439817952356bd4ba, type: 3}
+  - {fileID: 5042646636831406183, guid: 19e899f3dd936894a9f2a03b56494c41, type: 3}
+  - {fileID: 5042646636831406183, guid: f414911fc2826f841846cac39900a768, type: 3}
+  - {fileID: 5042646636831406183, guid: 6eb378da45d10de4cb4ba69ce505849c, type: 3}
+  - {fileID: 5042646636831406183, guid: 716ebce737f022d418d5a72826bcce28, type: 3}
+  - {fileID: 5042646636831406183, guid: 7407a94c587c3aa4b8bcdd7980a5ffb2, type: 3}
+  - {fileID: 5042646636831406183, guid: 82bc0712d8b53fa44a6571100f63ccb6, type: 3}
+  - {fileID: 5042646636831406183, guid: 3827a23d0c22ea141a3522fb4ac70e56, type: 3}
+  startTile: {fileID: 5042646636831406183, guid: 1448b6350e022824697cca9f3255d47d,
+    type: 3}
