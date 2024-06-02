@@ -14,6 +14,14 @@ public struct TilePosition : IEquatable<TilePosition>
         this.direction = direction;
     }
 
+    /// <summary>
+    /// Gets the next tileposition in the direction of this tilePosition with the same direction
+    /// </summary>
+    /// <returns></returns>
+    public TilePosition NextInDirection(int steps = 1)
+    {
+        return new TilePosition(position + direction.ToVector() * steps, direction);
+    }
     public override string ToString()
     {
         return position.ToString() + " " + direction.ToString();

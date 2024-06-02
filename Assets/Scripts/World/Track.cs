@@ -19,6 +19,7 @@ public class Track : MonoBehaviour
     public Vector2Int startPosition;
 
     public bool IsGenerated { get; private set; }
+    public float Distance = 0;
 
     [SerializeField, HideInInspector]
     public List<Chunk> chunks = new List<Chunk>();
@@ -50,7 +51,7 @@ public class Track : MonoBehaviour
 
         chunks.Clear();
 
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
             if (Application.isEditor)
                 DestroyImmediate(child.gameObject);
@@ -67,33 +68,66 @@ public class Track : MonoBehaviour
 
         var gen = new TrackGenerator(chunkSize, maxAttempts, maxMissSteps, tileSet.tiles);
 
-        Chunk startingChunk = GenerateStartingChunk(gen, new TilePosition(new Vector2Int(Mathf.RoundToInt(WorldConstants.ChunkSize / 2), WorldConstants.ChunkSize - 1), TileDirection.North), Vector2Int.zero);
+        TileDirection[] exitDirections = new TileDirection[]
+        {
+            TileDirection.East,
+            TileDirection.South,
+            TileDirection.West,
+        };
+
+        TilePosition startPosition = new TilePosition(new Vector2Int(5, 0), TileDirection.North);
+
+        GenerateTrackSettings startGenSettings = new GenerateTrackSettings(startPosition, exitDirections[0], chunkSize, new List<Tile>() { tileSet.startTile });
+
+        Chunk startingChunk = await GenerateChunk(gen, startGenSettings, Vector2Int.zero, "StartChunk");
         startingChunk.centerPathStartingDistance = 0;
         chunks.Add(startingChunk);
 
-        //Chunk first = GenerateChunk(gen, new TilePosition(startPosition, TileDirection.North), Vector2Int.zero, "Chunk_Start", TileDirection.East);
-        //first.centerPathStartingDistance = 0;
-        //chunks.Add(first);
 
-        TileDirection[] exitDirections = new TileDirection[]
-        {
-            TileDirection.North,
-            TileDirection.West,
-            TileDirection.North,
-            TileDirection.East,
-            TileDirection.East
-        };
+
+        //TilePosition exitPosition = new TilePosition(new Vector2Int(Mathf.RoundToInt(WorldConstants.ChunkSize / 2), WorldConstants.ChunkSize - 1), TileDirection.North);
+
+        //Vector2Int prevOffset = Vector2Int.zero;
+        //TilePosition nextTilePosition = exitPosition.NextInDirection();
+
 
         for (int i = 0; i < 3; i++)
         {
-            Vector2Int newChunkPosition = chunks[i].offset + chunks[i].nextTilePosition.direction.ToVector();
+            var nextTilePosition = chunks[i].nextTilePosition;
 
-            Chunk chunk = await GenerateChunk(gen, chunks[i].nextTilePosition, newChunkPosition, $"Chunk_{i}", exitDirections[i]);
+            Vector2Int newChunkPosition = chunks[i].offset + nextTilePosition.direction.ToVector();
+
+            Vector2Int trimmedEntryPos = new Vector2Int(
+                ((nextTilePosition.position.x % chunkSize) + chunkSize) % chunkSize,
+                ((nextTilePosition.position.y % chunkSize) + chunkSize) % chunkSize);
+
+            GenerateTrackSettings genSettings;
+            if (i == 2)
+            {
+                var endPos = startPosition.NextInDirection(-1);
+
+                Vector2Int trimmedEndPos = new Vector2Int(
+                    ((endPos.position.x % chunkSize) + chunkSize) % chunkSize,
+                    ((endPos.position.y % chunkSize) + chunkSize) % chunkSize);
+
+                genSettings = new GenerateTrackSettings(new TilePosition(trimmedEntryPos, nextTilePosition.direction), new TilePosition(trimmedEndPos, startPosition.direction), chunkSize);
+            }
+            else
+            {
+                genSettings = new GenerateTrackSettings(new TilePosition(trimmedEntryPos, nextTilePosition.direction), exitDirections[i + 1], chunkSize);
+            }
+            Chunk chunk = await GenerateChunk(gen, genSettings, newChunkPosition, $"Chunk_{i}");
 
             chunk.centerPathStartingDistance = chunks[i].centerPathEndDistance;
 
             chunks.Add(chunk);
         }
+
+        //Regenerate Starting Chunk
+
+        //Chunk startingChunk = await GenerateChunk(gen, )
+
+        Distance = chunks.Last().centerPathEndDistance;
 
         GenerateGroundPlane();
 
@@ -118,11 +152,13 @@ public class Track : MonoBehaviour
 
     public Vector3 GetPositionAtDistance(float distance)
     {
+        var moduloDistance = distance % Distance;
+
         for (int i = 0; i < chunks.Count; i++)
         {
-            if (distance < chunks[i].centerPathEndDistance)
+            if (moduloDistance < chunks[i].centerPathEndDistance)
             {
-                return chunks[i].GetPositionByDistance(distance);
+                return chunks[i].GetPositionByDistance(moduloDistance);
             }
         }
 
@@ -131,21 +167,14 @@ public class Track : MonoBehaviour
         return Vector3.zero;
     }
 
-    async Task<Chunk> GenerateChunk(TrackGenerator gen, TilePosition entryPosition, Vector2Int offset, string name, TileDirection exitDirection)
+    async Task<Chunk> GenerateChunk(TrackGenerator gen, GenerateTrackSettings genSettings, Vector2Int offset, string name)
     {
         GameObject chunkGO = new GameObject(name);
         chunkGO.transform.parent = transform;
         chunkGO.transform.localPosition = new Vector3(offset.x, 0, offset.y) * chunkSize * WorldConstants.TileSize;
         var chunk = chunkGO.AddComponent<Chunk>();
 
-        Vector2Int entryPos = new Vector2Int(
-            ((entryPosition.position.x % chunkSize) + chunkSize) % chunkSize,
-            ((entryPosition.position.y % chunkSize) + chunkSize) % chunkSize);
-
-
-        var res = await Task.Run(() => gen.GenerateTrack(new GenerateTrackSettings(new TilePosition(entryPos, entryPosition.direction),
-            new TileDirection[] {
-            exitDirection }, chunkSize)));
+        var res = await Task.Run(() => gen.GenerateTrack(genSettings));
 
         List<Tile> segments = new List<Tile>();
 
@@ -186,7 +215,7 @@ public class Track : MonoBehaviour
         return chunk;
     }
 
-    private Chunk GenerateStartingChunk(TrackGenerator gen, TilePosition exitPosition, Vector2Int offset)
+    private Chunk GenerateStartingChunk(TrackGenerator gen, TilePosition entryPosition, TilePosition exitPosition, Vector2Int offset)
     {
         GameObject chunkGO = new GameObject("Chunk_Start");
         chunkGO.transform.parent = transform;
@@ -199,6 +228,8 @@ public class Track : MonoBehaviour
 
 
         var res = gen.GenerateTrackFromTileList(new List<Tile> { tileSet.startTile }, entryPos);
+
+        gen.GenerateTrack(new GenerateTrackSettings(entryPosition, entryPos.NextInDirection(-1), chunkSize));
 
         List<Tile> segments = new List<Tile>();
 
@@ -243,7 +274,7 @@ public class Track : MonoBehaviour
     {
         GameObject borderGO = new GameObject("Border");
         borderGO.transform.parent = parent.transform;
-        borderGO.transform.localPosition = Vector3.zero;    
+        borderGO.transform.localPosition = Vector3.zero;
 
         if (borderPreset)
         {
@@ -253,7 +284,7 @@ public class Track : MonoBehaviour
             mf.sharedMesh = new Mesh();
             PathMeshGenerator.GenerateMesh(border, borderPreset, mf.sharedMesh, 20, -3);
         }
-        if(borderColliderPreset)
+        if (borderColliderPreset)
         {
             var coll = borderGO.AddComponent<MeshCollider>();
             coll.sharedMesh = new Mesh();
@@ -283,8 +314,11 @@ public class Track : MonoBehaviour
 
 
         var plane = Instantiate(chunkPlane, transform);
-        plane.transform.localPosition = center.X0Z() + new Vector3(1, 0, 1) * WorldConstants.ChunkSize * WorldConstants.TileSize / 4;
-        plane.transform.localScale = new Vector3(maxDistance * 3, 1, maxDistance * 3);
+        plane.transform.localPosition = center.X0Z() + new Vector3(1, 0, 1) * chunkSize * WorldConstants.TileSize / 2;
+
+        float size = 2 * (maxDistance + chunkSize * WorldConstants.TileSize);
+
+        plane.transform.localScale = new Vector3(size, 1, size);
 
     }
 }

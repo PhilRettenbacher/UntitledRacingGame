@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class GenerateTrackSettings
 {
-    public TilePosition entryTile;
-    public TileDirection[] exitDirections;
+    public TilePosition entryTilePosition;
+    public TileDirection exitDirection;
     public TilePosition exitPosition;
+    public bool useExitPosition;
     public bool[,] chunkGrid;
+    public List<Tile> startingTiles;
 
-    public GenerateTrackSettings(TilePosition entryTile, TileDirection[] exitDirections, int chunkSize)
+    public GenerateTrackSettings(TilePosition entryTile, TileDirection exitDirection, int chunkSize, List<Tile> startingTiles = null)
     {
-        this.entryTile = entryTile;
-        this.exitDirections = exitDirections;
+        this.entryTilePosition = entryTile;
+        this.exitDirection = exitDirection;
         chunkGrid = new bool[chunkSize, chunkSize];
+        this.startingTiles = startingTiles;
+        useExitPosition = false;
     }
 
-    public GenerateTrackSettings(TilePosition entryTile, TilePosition exitPosition, bool[,] chunkGrid)
+    public GenerateTrackSettings(TilePosition entryTile, TilePosition exitPosition, int chunkSize, List<Tile> startingTiles = null)
     {
-        this.entryTile = entryTile;
+        this.entryTilePosition = entryTile;
         this.exitPosition = exitPosition;
-        this.chunkGrid = chunkGrid;
+        chunkGrid = new bool[chunkSize, chunkSize];
+        this.startingTiles = startingTiles;
+        useExitPosition = true;
     }
 }

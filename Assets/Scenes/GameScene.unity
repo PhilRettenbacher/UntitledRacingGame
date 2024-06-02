@@ -420,7 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetDistance: 0
   distanceToTarget: 60
-  yOffset: -5
+  yOffset: -6
 --- !u!1 &1891870663
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,10 +477,11 @@ MonoBehaviour:
   borderColliderPreset: {fileID: -8601870727651675634, guid: 6ba08ffe57072e443936b152ecf4f161,
     type: 3}
   presetMaterial: {fileID: 2100000, guid: a855cfd555a5ef8419107cc1757b1852, type: 2}
-  chunkSize: 50
-  maxAttempts: 30
-  maxMissSteps: 2000
+  chunkSize: 30
+  maxAttempts: 100
+  maxMissSteps: 10000
   startPosition: {x: 5, y: 0}
+  Distance: 0
   chunks: []
 --- !u!4 &1891870666
 Transform:

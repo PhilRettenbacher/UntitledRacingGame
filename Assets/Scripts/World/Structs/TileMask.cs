@@ -33,7 +33,7 @@ public class TileMask : ISerializationCallbackReceiver
     {
         TilePositionTransformation trans = new TilePositionTransformation(gridEntryPosition, entryPosition);
 
-        return trans.TransformTilePosition(new TilePosition(exitPosition.position + exitPosition.direction.ToVector(), exitPosition.direction));
+        return trans.TransformTilePosition(exitPosition.NextInDirection());
     }
 
     /// <summary>

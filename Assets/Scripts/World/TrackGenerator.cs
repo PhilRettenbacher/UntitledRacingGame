@@ -8,7 +8,7 @@ public class TrackGenerator
     int chunkSize;
     int maxMissSteps;
     int maxAttempts;
-    int minDepth = 30;
+    int minDepth = 5;
     float minSubdivisionPathDistance = 15;
 
     List<Tile> tiles;
@@ -44,7 +44,6 @@ public class TrackGenerator
 
         GeneratedTrackResult res = null;
 
-
         while (attempts < maxAttempts && !success)
         {
             res = TryGenerateTrack(genSettings);
@@ -72,9 +71,16 @@ public class TrackGenerator
 
         List<TrackSegment> currStack = new List<TrackSegment>();
 
+        TilePosition entryPosition = genSettings.entryTilePosition;
+
+        if(genSettings.startingTiles != null)
+        {
+            PlaceTileList(genSettings.startingTiles, genSettings.entryTilePosition, chunkGrid, currStack, out entryPosition);
+        }
+
         System.Random random = new System.Random();
 
-        if (!PlaceTile(chunkGrid, currStack, genSettings.entryTile, 0, genSettings, TileConnectionType.RoadStraight, random, ref missSteps))
+        if (!PlaceTile(chunkGrid, currStack, entryPosition, 0, genSettings, TileConnectionType.RoadStraight, random, ref missSteps))
         {
             return null;
 
@@ -82,7 +88,8 @@ public class TrackGenerator
         return new GeneratedTrackResult(currStack,
             GenerateTrackPath(x => x.leftBorder, currStack, true),
             GenerateTrackPath(x => x.rightBorder, currStack, false),
-            GenerateTrackPath(x => x.centerPath, currStack, false));
+            GenerateTrackPath(x => x.centerPath, currStack, false),
+            chunkGrid);
     }
 
     /// <summary>
@@ -94,11 +101,13 @@ public class TrackGenerator
     {
         List<TrackSegment> currentStack = new List<TrackSegment>();
 
+        bool[,] chunkGrid = new bool[chunkSize, chunkSize];
+
         TilePosition currentEntryPosition = entryPosition;
         for (int i = 0; i < tiles.Count; i++)
         {
             var nextTilePos = tiles[i].mask.FindNextTilePosition(currentEntryPosition);
-
+            tiles[i].mask.FillGrid(chunkGrid, currentEntryPosition, true);
             currentStack.Add(new TrackSegment() { tile = tiles[i], pos = currentEntryPosition, next = nextTilePos });
 
             currentEntryPosition = nextTilePos;
@@ -107,7 +116,22 @@ public class TrackGenerator
         return new GeneratedTrackResult(currentStack,
             GenerateTrackPath(x => x.leftBorder, currentStack, true),
             GenerateTrackPath(x => x.rightBorder, currentStack, false),
-            GenerateTrackPath(x => x.centerPath, currentStack, false));
+            GenerateTrackPath(x => x.centerPath, currentStack, false),
+            chunkGrid);
+    }
+
+    private void PlaceTileList(List<Tile> tiles, TilePosition entryPosition, bool[,] chunkGrid, List<TrackSegment> currentStack, out TilePosition nextTilePosition)
+    {
+        TilePosition currentEntryPosition = entryPosition;
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            var nextTilePos = tiles[i].mask.FindNextTilePosition(currentEntryPosition);
+            tiles[i].mask.FillGrid(chunkGrid, currentEntryPosition, true);
+            currentStack.Add(new TrackSegment() { tile = tiles[i], pos = currentEntryPosition, next = nextTilePos });
+
+            currentEntryPosition = nextTilePos;
+        }
+        nextTilePosition = currentEntryPosition;
     }
 
     public Path GenerateTrackPath(System.Func<Tile, Path> getPath, List<TrackSegment> track, bool normalFacesRight)
@@ -160,7 +184,7 @@ public class TrackGenerator
                 bool canExit = false;
                 if (nextPos.position.x < 0 || nextPos.position.y < 0 || nextPos.position.x >= grid.GetLength(0) || nextPos.position.y >= grid.GetLength(1))
                 {
-                    if (genSettings.exitDirections.Contains(nextPos.direction) && currDepth >= minDepth)
+                    if (CanExit(genSettings, nextPos, currDepth, shuffledTiles[i].exitConnectionType))
                     {
                         Debug.Log(nextPos);
                         //Exit
@@ -198,6 +222,22 @@ public class TrackGenerator
     private void GenerateTileConnectionTable()
     {
         tileConnectionTable = tiles.GroupBy(x => x.entryConnectionType).ToDictionary(x => x.Key, x => x.ToList());
+    }
+
+    private bool CanExit(GenerateTrackSettings genSettings, TilePosition nextPosition, int currentDepth, TileConnectionType type)
+    {
+        if (type != TileConnectionType.RoadStraight)
+            return false;
+
+        if (genSettings.useExitPosition)
+        {
+            //Dont check for mindepth when using exitPosition to increase chance of correct generation
+            return nextPosition.NextInDirection(-1) == genSettings.exitPosition;
+        }
+        else
+        {
+            return genSettings.exitDirection == nextPosition.direction && currentDepth > minDepth;
+        }
     }
 }
 

@@ -3397,7 +3397,7 @@ PrefabInstance:
     - target: {fileID: 4475167082726514672, guid: 3fe64db8f6268804c8c4b398a5044e2b,
         type: 3}
       propertyPath: carPrefabs.Array.size
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4475167082726514672, guid: 3fe64db8f6268804c8c4b398a5044e2b,
         type: 3}
@@ -3428,6 +3428,18 @@ PrefabInstance:
       propertyPath: carPrefabs.Array.data[5]
       value: 
       objectReference: {fileID: 6931377107569150902, guid: f71718cd8b4efd04b835c28d8e6857c2,
+        type: 3}
+    - target: {fileID: 4475167082726514672, guid: 3fe64db8f6268804c8c4b398a5044e2b,
+        type: 3}
+      propertyPath: carPrefabs.Array.data[6]
+      value: 
+      objectReference: {fileID: 7523478201124845092, guid: bcb0c59976918e84f93cbf86c883ad05,
+        type: 3}
+    - target: {fileID: 4475167082726514672, guid: 3fe64db8f6268804c8c4b398a5044e2b,
+        type: 3}
+      propertyPath: carPrefabs.Array.data[7]
+      value: 
+      objectReference: {fileID: 369202830925993354, guid: 1cb848ff0c5efa04db0418f08fd53e0c,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fe64db8f6268804c8c4b398a5044e2b, type: 3}

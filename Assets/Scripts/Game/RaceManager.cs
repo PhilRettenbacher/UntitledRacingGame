@@ -18,7 +18,7 @@ public class RaceManager : MonoBehaviour
     List<Transform> startingPositions = new List<Transform>();
 
     public float yThreshold = -5;
-    public float minimalCameraDistanceFromLeader = 20f;
+    public float minimalCameraDistanceFromLeader = 15f;
     public float eliminationDistance = 50; //Distance to the leader to get disqualified
     public float cameraDistanceFromLeaderOnStart = -10f;
 
@@ -82,6 +82,11 @@ public class RaceManager : MonoBehaviour
 
         foreach(var player in gameManager.Players)
         {
+            if(player.CarInstance.lapCount >= 3)
+            {
+                FinishGame();
+            }
+
             if(player.CarInstance.distance < leaderDistance - eliminationDistance)
             {
                 DisqualifyPlayer(player);

@@ -11,6 +11,7 @@ public class PathTracker : MonoBehaviour
 
     public float currentChunkDistance = -1;
     public float currentDistance = -1;
+    public int lapCount { get; private set; } = 0;
 
     public int currentChunkId = -1;
 
@@ -23,12 +24,24 @@ public class PathTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (track == null)
+        if (track == null || !track.IsGenerated)
             return;
+
+        int lastChunk = currentChunkId;
 
         currentChunkId = track.GetChunkIdOfPosition(transform.position);
         if (currentChunkId == -1)
             return;
+
+        if(currentChunkId == 0 && lastChunk == track.chunks.Count - 1)
+        {
+            lapCount ++;
+        }
+        else if(currentChunkId == track.chunks.Count - 1 && lastChunk == 0)
+        {
+            Debug.Log(track.chunks.Count);
+            lapCount --;
+        }
 
         var chunk = track.chunks[currentChunkId];
 
@@ -45,7 +58,7 @@ public class PathTracker : MonoBehaviour
         float distanceOnLineT = Mathf.Cos(angle * Mathf.Deg2Rad) * distanceToClosestPoint.magnitude / distancePoints.magnitude;
 
         currentChunkDistance = Mathf.Lerp(chunk.centerPath.subdivisionPoints[closestPoint].distance, chunk.centerPath.subdivisionPoints[secondClosestPoint].distance, distanceOnLineT);
-        currentDistance = chunk.centerPathStartingDistance + currentChunkDistance;
+        currentDistance = chunk.centerPathStartingDistance + currentChunkDistance + lapCount * track.Distance;
 
         Vector2 pointOnLine = Vector2.Lerp(chunk.centerPath.subdivisionPoints[closestPoint].position, chunk.centerPath.subdivisionPoints[secondClosestPoint].position, distanceOnLineT);
         Debug.DrawLine(transform.position, (pointOnLine + chunk.transform.position.XZ()).X0Z());

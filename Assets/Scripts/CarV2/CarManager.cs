@@ -37,6 +37,7 @@ public class CarManager : MonoBehaviour
     public Vector2 groundVelocity { get; set; }
 
     public float distance { get => pathTracker?.currentDistance ?? -1; }
+    public int lapCount { get => pathTracker?.lapCount ?? -1; }
 
     // Start is called before the first frame update
     void Awake()
